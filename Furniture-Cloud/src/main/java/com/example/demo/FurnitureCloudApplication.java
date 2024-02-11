@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FurnitureCloudApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FurnitureCloudApplication.class, args);//noEEEE
+		SpringApplication.run(FurnitureCloudApplication.class, args);//Arthur's
 	}
 
 }
