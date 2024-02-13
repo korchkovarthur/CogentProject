@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 @Repository
-public class ProductRepository implements DAO<Product> {
+public class ProductRepository implements DAO<Product, Long> {
 	@PersistenceContext
 	@Autowired
 	EntityManager entityManager;
