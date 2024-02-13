@@ -8,15 +8,39 @@ import jakarta.persistence.Id;
 @Entity
 public class User {
 	@Id
-	String email;
-	String firstName;
-	String lastName;
+	private String email;
+	private String firstName;
+	private String lastName;
 	// change to list later to accommodate more addresses
-	Address address;
+	private Address address;
 	// List<Product> shoppingCart;
-	Cart mainCart;
-	Cart wishList;
+	 private Cart mainCart;
+	 private Cart wishList;
 	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Cart getMainCart() {
+		return mainCart;
+	}
+
+	public void setMainCart(Cart mainCart) {
+		this.mainCart = mainCart;
+	}
+
+	public Cart getWishList() {
+		return wishList;
+	}
+
+	public void setWishList(Cart wishList) {
+		this.wishList = wishList;
+	}
+
 	public User() {
 		
 		
