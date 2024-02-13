@@ -1,7 +1,6 @@
 package com.furniturecloud.datalayer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -18,27 +17,19 @@ public class ProductRepository implements DAO<Product, Long> {
 	}
 
 	@Override
-	public Product get(long SKU) {
-		return entityManager.find(Product.class, SKU);
-	}
-
-	@Override
 	public void update(Product product) {
-		if(((ProductRepository) entityManager).get(product.SKU) != null) entityManager.merge(product);
+		if(((ProductRepository) entityManager).get(product.SKU) != null) 
+			entityManager.merge(product);
 	}
 
 	@Override
 	
 	public void delete(Product t) {
-		// TODO Auto-generated method stub
-				
+		entityManager.remove(t);
 	}
 	@Override
-	public Product get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-
-	
-	
+	public Product get(Long id) {	
+		return entityManager.find(Product.class, id);	
+	}
 
 }

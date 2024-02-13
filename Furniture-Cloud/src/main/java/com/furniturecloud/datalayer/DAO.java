@@ -5,5 +5,4 @@ public interface DAO <T, K>{
 	abstract T get(K id);
 	abstract void update(T t);
 	abstract void delete(T t);
-	Product get(long SKU);
 }
