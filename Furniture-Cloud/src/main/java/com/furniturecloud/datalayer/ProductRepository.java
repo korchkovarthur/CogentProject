@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 @Repository
-public class ProductRepository implements DAO<Product> {
+public class ProductRepository implements DAO<Product, Long> {
 	@PersistenceContext
 	@Autowired
 	EntityManager entityManager;
@@ -23,15 +23,12 @@ public class ProductRepository implements DAO<Product> {
 
 	@Override
 	public void update(Product product) {
-		if(((ProductRepository) entityManager).get(product.SKU) == null) entityManager.merge(product);
+		if(((ProductRepository) entityManager).get(product.SKU) != null) entityManager.merge(product);
 	}
 
 	@Override
 	public void delete(Product t) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	
-
+	}		
 }
