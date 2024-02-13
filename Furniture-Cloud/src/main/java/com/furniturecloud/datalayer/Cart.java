@@ -15,19 +15,37 @@ public class Cart {
 		cart = new HashMap<>();
 	}
 	
-	void addToCart(Product product) {
-		if (cart.containsKey(product)) {
-			cart.put(product, cart.get(product) + 1);
-		}
+	public int getSize() {
+		return cart.size();
+	}
+	
+	public boolean isEmpty() {
+		return cart.isEmpty();
+	}
+	
+	public void addToCart(Product product) {
+		increment(product);
 		cart.putIfAbsent(product, 1);
 	}
 	
-	boolean removeFromCart(Product product) {
+	public boolean removeFromCart(Product product) {
 		if (cart.containsKey(product)) {
-			cart.put(product, cart.get(product) - 1);
+			cart.remove(product);
 			return true;
 		}
-		return false;
+		return false; // item not in cart
+	}
+	
+	public void increment(Product product) {
+		if (cart.containsKey(product)) {
+			cart.put(product, cart.get(product) + 1);
+		}
+	}
+	
+	public void decrement(Product product) {
+		if (cart.containsKey(product)) {
+			cart.put(product, cart.get(product) - 1);
+		}
 	}
 
 }

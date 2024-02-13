@@ -27,8 +27,8 @@ public class ProductRepository implements DAO<Product, Long> {
 	}
 
 	@Override
-	public void delete(Product t) {
-		// TODO Auto-generated method stub
-		
-	}		
+	public void delete(Product t) {	
+
+	}
+	
 }

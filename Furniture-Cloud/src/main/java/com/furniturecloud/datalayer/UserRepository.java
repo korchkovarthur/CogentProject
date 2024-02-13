@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 @Repository
-public class UserRepository implements DAO<User> {
+public class UserRepository implements DAO<User, String> {
 	@PersistenceContext
 	@Autowired
 	EntityManager em;
@@ -17,22 +17,21 @@ public class UserRepository implements DAO<User> {
 	}
 
 	@Override
-	public User get() {
+	public User get(String email) {
 		// TODO Auto-generated method stub
-		return null;
+		return em.find(User.class, email);
 	}
 
 	@Override
 	public void update(User t) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
+		if(get(t.getEmail())!=null) 
+			em.merge(t);		
 	}
 
 	@Override
 	public void delete(User t) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	
+		em.remove(t);		
+	}	
 }
