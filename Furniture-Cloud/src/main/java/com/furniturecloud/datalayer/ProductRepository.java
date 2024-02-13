@@ -1,6 +1,7 @@
 package com.furniturecloud.datalayer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -27,8 +28,17 @@ public class ProductRepository implements DAO<Product, Long> {
 	}
 
 	@Override
-	public void delete(Product t) {	
-
-	}
 	
+	public void delete(Product t) {
+		// TODO Auto-generated method stub
+				
+	}
+	@Override
+	public Product get(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+
+	
+	
+
 }
