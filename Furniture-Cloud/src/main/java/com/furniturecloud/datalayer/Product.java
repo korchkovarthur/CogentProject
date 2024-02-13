@@ -11,5 +11,24 @@ public class Product {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	long SKU;
 	String category;
-	int stock;	
+	int stock;
+	public long getSKU() {
+		return SKU;
+	}
+	public void setSKU(long sKU) {
+		SKU = sKU;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}	
+	
 }
