@@ -16,10 +16,10 @@ public class ProductRepository implements DAO<Product, Long> {
 		entityManager.persist(product);		
 	}
 
-	@Override
-	public Product get(long SKU) {
-		return entityManager.find(Product.class, SKU);
-	}
+//	@Override
+//	public Product get(long SKU) {
+//		return entityManager.find(Product.class, SKU);
+//	}
 
 	@Override
 	public void update(Product product) {
@@ -30,6 +30,12 @@ public class ProductRepository implements DAO<Product, Long> {
 	public void delete(Product t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Product get(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

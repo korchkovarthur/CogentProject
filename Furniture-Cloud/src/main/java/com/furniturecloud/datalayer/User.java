@@ -14,8 +14,8 @@ public class User {
 	// change to list later to accommodate more addresses
 	private Address address;
 	// List<Product> shoppingCart;
-	 private Cart mainCart;
-	 private Cart wishList;
+	private Cart mainCart;
+	private Cart wishList;
 	
 	public Address getAddress() {
 		return address;
