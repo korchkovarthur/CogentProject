@@ -31,5 +31,4 @@ public class ProductRepository implements DAO<Product, Long> {
 	public Product get(Long id) {	
 		return entityManager.find(Product.class, id);	
 	}
-
 }
