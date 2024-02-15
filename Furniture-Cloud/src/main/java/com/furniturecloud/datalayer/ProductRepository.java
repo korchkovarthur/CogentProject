@@ -18,11 +18,10 @@ public class ProductRepository implements DAO<Product, Long> {
 
 	@Override
 	public void update(Product product) {
-		if(((ProductRepository) entityManager).get(product.SKU) != null) 
+		if(get(product.SKU) != null) 
 			entityManager.merge(product);
 	}
 
-	@Override
 	
 	public void delete(Product t) {
 		entityManager.remove(t);
