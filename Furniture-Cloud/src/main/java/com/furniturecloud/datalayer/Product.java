@@ -9,7 +9,12 @@ import jakarta.persistence.Id;
 public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	long SKU;
+	Long SKU;
+	public Product(String category, int stock) {
+		super();
+		this.category = category;
+		this.stock = stock;
+	}
 	String category;
 	int stock;
 	public long getSKU() {

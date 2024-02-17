@@ -3,13 +3,27 @@ package com.furniturecloud.datalayer;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 // when user logins load this from database
 // when user logs off or tries to buy
-
+@Entity
 public class Cart {
 	
 	// <product id, quantity>
-	Map<Product, Integer> cart;
+	@Id
+	long cartId;
+	
+	public long getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(long cartId) {
+		this.cartId = cartId;
+	}
+	
+	Map<Long, Integer> cart;
 	
 	public Cart() {
 		cart = new HashMap<>();

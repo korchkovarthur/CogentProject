@@ -4,6 +4,7 @@ package com.furniturecloud.datalayer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -11,10 +12,13 @@ public class User {
 	private String email;
 	private String firstName;
 	private String lastName;
-	// change to list later to accommodate more addresses
+//	change to list later to accommodate more addresses
+	@OneToOne
 	private Address address;
-	// List<Product> shoppingCart;
+//	List<Product> shoppingCart;
+	@OneToOne
 	private Cart mainCart;
+	@OneToOne
 	private Cart wishList;
 	
 	public Address getAddress() {
