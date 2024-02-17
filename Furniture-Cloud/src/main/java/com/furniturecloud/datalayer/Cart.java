@@ -8,21 +8,14 @@ import jakarta.persistence.Id;
 
 // when user logins load this from database
 // when user logs off or tries to buy
+
 @Entity
 public class Cart {
 	
-	// <product id, quantity>
 	@Id
-	long cartId;
+	Long cartId;
 	
-	public long getCartId() {
-		return cartId;
-	}
-
-	public void setCartId(long cartId) {
-		this.cartId = cartId;
-	}
-	
+	// <productId, quantity>
 	Map<Long, Integer> cart;
 	
 	public Cart() {
@@ -37,28 +30,28 @@ public class Cart {
 		return cart.isEmpty();
 	}
 	
-	public void addToCart(Product product) {
-		increment(product);
-		cart.putIfAbsent(product, 1);
+	public void addToCart(Long productId) {
+		increment(productId);
+		cart.putIfAbsent(productId, 1);
 	}
 	
-	public boolean removeFromCart(Product product) {
-		if (cart.containsKey(product)) {
-			cart.remove(product);
+	public boolean removeFromCart(Long productId) {
+		if (cart.containsKey(productId)) {
+			cart.remove(productId);
 			return true;
 		}
 		return false; // item not in cart
 	}
 	
-	public void increment(Product product) {
-		if (cart.containsKey(product)) {
-			cart.put(product, cart.get(product) + 1);
+	public void increment(Long productId) {
+		if (cart.containsKey(productId)) {
+			cart.put(productId, cart.get(productId) + 1);
 		}
 	}
 	
-	public void decrement(Product product) {
-		if (cart.containsKey(product)) {
-			cart.put(product, cart.get(product) - 1);
+	public void decrement(Long productId) {
+		if (cart.containsKey(productId)) {
+			cart.put(productId, cart.get(productId) - 1);
 		}
 	}
 
