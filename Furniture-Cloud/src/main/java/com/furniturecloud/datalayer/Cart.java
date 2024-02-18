@@ -21,6 +21,11 @@ public class Cart {
 	public Cart() {
 		cart = new HashMap<>();
 	}
+	public Cart(String mapData) {
+		cart = new HashMap<>();
+		parseCart(mapData);
+	}
+	
 	
 	public int getSize() {
 		return cart.size();
@@ -54,5 +59,22 @@ public class Cart {
 			cart.put(productId, cart.get(productId) - 1);
 		}
 	}
+	
+	public String toData() {
+		StringBuilder data =new StringBuilder();
+		for(Long id : cart.keySet()) {
+			data.append(id+" "+cart.get(id)+",");
+		}
+		return data.toString();
+	}
+	public void parseCart(String data) {
+		String[] dataArray = data.split(",");
+		for(String item:dataArray) {
+			String arr[] =item.split(" ");
+			cart.put(Long.parseLong(arr[0]),Integer.parseInt(arr[1]));
+		}
+	}
+		
+
 
 }

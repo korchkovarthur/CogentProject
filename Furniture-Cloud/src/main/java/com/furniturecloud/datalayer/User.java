@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+
 @Entity
 public class User {
 	@Id
@@ -15,11 +16,11 @@ public class User {
 //	change to list later to accommodate more addresses
 	@OneToOne
 	private Address address;
-//	List<Product> shoppingCart;
-	@OneToOne
-	private Cart mainCart;
-	@OneToOne
-	private Cart wishList;
+
+	private String cartData;
+	private String wishListData;
+	
+	
 	
 	public Address getAddress() {
 		return address;
@@ -29,21 +30,25 @@ public class User {
 		this.address = address;
 	}
 
-	public Cart getMainCart() {
-		return mainCart;
+//	}
+	//Cart Data String
+	public String getCartData() {
+		return cartData;
+	}
+	public void setCartData(String cartData) {
+		this.cartData = cartData;
+	}
+	
+	//Cart Data String
+	public String getWishListData() {
+		return wishListData;
 	}
 
-	public void setMainCart(Cart mainCart) {
-		this.mainCart = mainCart;
+	public void setWishListData(String wishListData) {
+		this.wishListData = wishListData;
 	}
+	
 
-	public Cart getWishList() {
-		return wishList;
-	}
-
-	public void setWishList(Cart wishList) {
-		this.wishList = wishList;
-	}
 
 	public User() {
 		
@@ -55,8 +60,8 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.address = address;
-		this.mainCart = new Cart();
-		this.wishList = new Cart();
+//		this.mainCart = new Cart();
+//		this.wishList = new Cart();
 	}
 	
 	public String getEmail() {
@@ -82,7 +87,25 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+//	List<Product> shoppingCart;
+//	@Transient
+//	private Cart mainCart;
+//	@Transient
+//	private Cart wishList;
 
-	
+	//Cart Object
+//	public Cart getWishList() {
+//		return wishList;
+//	}
+//
+//	public void setWishList(Cart wishList) {
+//		this.wishList = wishList;
+//	}
+	//Cart Object
+//	public Cart getMainCart() {
+//		return mainCart;
+//	}
+//
+//	public void setMainCart(Cart mainCart) {
+//		this.mainCart = mainCart;
 }
