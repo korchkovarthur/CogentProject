@@ -4,12 +4,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedNativeQuery;
 
 @Entity
+@NamedNativeQuery(
+	    name="selectAll",
+	    query="SELECT PRODUCT.* FROM PRODUCT_ AS PRODUCT ",
+	    resultClass=Product.class
+	)
+
+
+//	Query query = em.createNamedQuery("complexQuery", User.class);
+//	query.setParameter(1, id);
+//	User user = (User) query.getSingleResult();
 public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long SKU;
+	String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setSKU(Long sKU) {
+		SKU = sKU;
+	}
 	public Product(String category, int stock) {
 		super();
 		this.category = category;

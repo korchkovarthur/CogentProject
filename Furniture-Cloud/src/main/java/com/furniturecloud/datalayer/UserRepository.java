@@ -1,5 +1,7 @@
 package com.furniturecloud.datalayer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +32,13 @@ public class UserRepository implements DAO<User, String> {
 	}
 
 	@Override
-	public void delete(User t) {
-		entityManager.remove(t);		
+	public void delete(String email) {
+		entityManager.remove(get(email));		
+	}
+
+	@Override
+	public List<?> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

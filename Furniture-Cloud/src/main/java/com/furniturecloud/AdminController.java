@@ -2,6 +2,9 @@ package com.furniturecloud;
 
 
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,56 +37,84 @@ public class AdminController{
 	@PostMapping("/product/create")
 	public ResponseEntity<?> createProduct(@Valid @RequestBody  Product prod, BindingResult br) {
 		if(!br.hasErrors()) {
-			if(product.get(prod.getSKU())==null) {
-				product.create(prod);
-				return ResponseEntity.status(HttpStatus.OK).body(product.get(prod.getSKU()));
-			}
-			return false;		
+			product.create(prod);
+			return ResponseEntity.status(HttpStatus.OK).body(product.get(prod.getSKU()));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
-			
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
 
 	}
 	
-	@DeleteMapping("/product/delete")
-	public ResponseEntity<?> deleteProduct(@Valid @RequestBody Product prod) {
-		product.delete(prod);
+	@DeleteMapping("/product/delete/{id}")
+	public ResponseEntity<?> deleteProduct( @PathVariable Long sku) {
+		product.delete(sku);
+		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
 	
-	@PutMapping("/product/update/")
-	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod) {
-		product.update(prod);
+	@PutMapping("/product/update/{id}")
+	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod,
+			@PathVariable Long id, BindingResult br) {
+		if(!br.hasErrors()) {
+			prod.setSKU(id);
+			product.update(prod);
+			return ResponseEntity.status(HttpStatus.OK).body("Updated");
+			
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
 	
 	@GetMapping("/product/{id}")
-	public ResponseEntity<?> getProduct(@Valid @PathVariable Long id) {
-		product.get(id);
+	public ResponseEntity<?> getProduct(@Valid @PathVariable Long id) {	
+		Product p =product.get(id);
+		if(p!=null)
+			return ResponseEntity.status(HttpStatus.OK).body(p);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid SKU");
+	}
+	@GetMapping("/product/all")
+	public ResponseEntity<?> getAllProducts() {	
+		List<?> l=product.getAll();
+		return ResponseEntity.status(HttpStatus.OK).body(l);
 	}
 	
 	
 	//User
 	@PostMapping("/user/create")
-	public ResponseEntity<?> createUser(@Valid @RequestBody User t) {
-		user.create(t);
+	public ResponseEntity<?> createUser(@Valid @RequestBody User t, BindingResult br) {
+		if(!br.hasErrors()) {
+			user.create(t);
+			return ResponseEntity.status(HttpStatus.OK).body(user.get(t.getEmail()));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
+
 	}
-	@DeleteMapping("/user/delete")
-	public ResponseEntity<?> deleteUser(@Valid @RequestBody User t) {
-		user.delete(t);
+	
+	@DeleteMapping("/user/delete/{id}")
+	public ResponseEntity<?> deleteUser(@Valid @PathVariable String id) {
+		user.delete(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
-	@PutMapping("/user/update/")
-	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t) {  
-		user.update(t);
+	@PutMapping("/user/update/{id}")
+	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t, @PathVariable String id,  BindingResult br) {  
+		
+		if(!br.hasErrors()) {
+			t.setEmail(id);
+			user.update(t);
+			return ResponseEntity.status(HttpStatus.OK).body("Updated");
+			
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
 	@GetMapping("/user/{email}")
 	public ResponseEntity<?> getUser(@Valid@PathVariable String email) {
-		user.get(email);
-		return 
+		User t =user.get(email);
+		if(t!=null)
+			return ResponseEntity.status(HttpStatus.OK).body(t);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Email id");
 	}
-	<T> ResponseEntity<T> evaluateRequest(T item, HttpStatus success, HttpStatus fail ){
-		if(item!=null) {
-			return ResponseEntity.status(success).body(item);	
-		}
-		return ResponseEntity.status(fail).body(item);		
-	}
+//	<T> ResponseEntity<T> evaluateRequest(T item, HttpStatus success, HttpStatus fail ){
+//		if(item!=null) {
+//			return ResponseEntity.status(success).body(item);	
+//		}
+//		return ResponseEntity.status(fail).body(item);		
+//	}
 	
 }

@@ -10,4 +10,4 @@ public class FurnitureCloudApplication {
 
 		SpringApplication.run(FurnitureCloudApplication.class, args);//Arthur's
 	}
-	}
+}
