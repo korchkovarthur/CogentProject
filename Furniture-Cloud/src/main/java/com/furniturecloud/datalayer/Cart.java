@@ -3,16 +3,14 @@ package com.furniturecloud.datalayer;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
+//Unused class
 // when user logins load this from database
 // when user logs off or tries to buy
 
-@Entity
+//@Entity
 public class Cart {
 	
-	@Id
+//	@Id
 	Long cartId;
 	
 	// <productId, quantity>

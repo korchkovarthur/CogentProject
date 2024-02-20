@@ -3,9 +3,9 @@ package com.furniturecloud.datalayer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-@Entity
+//@Entity
 public class Address {	
-	@Id
+//	@Id
 	String addressId;
 	String addressLine1;
 	public String getAddressId() {

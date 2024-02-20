@@ -1,14 +1,16 @@
 package com.furniturecloud.security;
 
-//import javax.sql.DataSource;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.provisioning.JdbcUserDetailsManager;
-//import org.springframework.security.web.SecurityFilterChain;
-//
-//public class SecuritySetttings {
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
+import org.springframework.security.web.SecurityFilterChain;
+@Configuration
+//@EnableWebSecurity
+public class SecuritySetttings {
 //	@Bean
 //	public UserDetailsService userDetails(DataSource ds) {
 //		
@@ -21,5 +23,16 @@ package com.furniturecloud.security;
 //		return null;
 //		
 //	}
-//
-//}
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//		http.authorizeHttpRequests((authorize) -> authorize
+//		        .anyRequest().authe
+//		    );
+		http.csrf((csrf) -> csrf.disable());
+		http.sessionManagement(s->s.disable());
+		http.httpBasic(d->d.disable());
+//		http.httpBasic(Customizer.withDefaults());
+		return http.build();
+	}
+
+}

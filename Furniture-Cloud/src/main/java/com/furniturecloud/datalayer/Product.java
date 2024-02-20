@@ -9,19 +9,23 @@ import jakarta.persistence.NamedNativeQuery;
 @Entity
 @NamedNativeQuery(
 	    name="selectAll",
-	    query="SELECT PRODUCT.* FROM PRODUCT_ AS PRODUCT ",
+	    query="SELECT PRODUCT.* FROM PRODUCT AS PRODUCT ",
+	    resultClass=Product.class
+	)
+@NamedNativeQuery(
+	    name="selectAllCategory",
+	    query="SELECT PRODUCT.* FROM PRODUCT AS PRODUCT WHERE PRODUCT.category =?1",
 	    resultClass=Product.class
 	)
 
 
-//	Query query = em.createNamedQuery("complexQuery", User.class);
-//	query.setParameter(1, id);
-//	User user = (User) query.getSingleResult();
 public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long SKU;
 	String name;
+	String category;
+	Integer stock;
 	public String getName() {
 		return name;
 	}
@@ -36,8 +40,10 @@ public class Product {
 		this.category = category;
 		this.stock = stock;
 	}
-	String category;
-	int stock;
+	public Product() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public long getSKU() {
 		return SKU;
 	}

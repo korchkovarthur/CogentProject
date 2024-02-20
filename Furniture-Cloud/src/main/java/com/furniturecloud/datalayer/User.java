@@ -4,29 +4,36 @@ package com.furniturecloud.datalayer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.NamedNativeQuery;
+
 
 
 @Entity
+@NamedNativeQuery(
+	    name="selectAllUsers",
+	    query="SELECT USER.* FROM USER AS USER ",
+	    resultClass=User.class
+	)
+
 public class User {
 	@Id
 	private String email;
 	private String firstName;
 	private String lastName;
 //	change to list later to accommodate more addresses
-	@OneToOne
-	private Address address;
+//	@OneToOne
+	private String address;
 
 	private String cartData;
 	private String wishListData;
 	
 	
 	
-	public Address getAddress() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 
@@ -55,7 +62,7 @@ public class User {
 		
 	}
 	
-	public User(String firstName, String lastName, String email, Address address) {
+	public User(String firstName, String lastName, String email, String address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

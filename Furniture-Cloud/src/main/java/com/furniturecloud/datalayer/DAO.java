@@ -10,5 +10,5 @@ public interface DAO <T, K>{
 	abstract T get(K id);
 	abstract void update(T t);
 	abstract void delete(K id);
-	abstract List<?> getAll();
+	abstract List<T> getAll(String ...param);
 }

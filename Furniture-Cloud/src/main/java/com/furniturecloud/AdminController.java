@@ -41,7 +41,6 @@ public class AdminController{
 			return ResponseEntity.status(HttpStatus.OK).body(product.get(prod.getSKU()));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
-
 	}
 	
 	@DeleteMapping("/product/delete/{id}")
@@ -69,29 +68,37 @@ public class AdminController{
 			return ResponseEntity.status(HttpStatus.OK).body(p);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid SKU");
 	}
-	@GetMapping("/product/all")
-	public ResponseEntity<?> getAllProducts() {	
-		List<?> l=product.getAll();
+	@GetMapping("/product/getAll/{param1}/{param2}")
+	public ResponseEntity<?> getAllProducts(@PathVariable("param1") String param1, @PathVariable("param2") String param2) {	
+		if(!(param1.equals("Category")||param1.equals("none")))
+			return ResponseEntity.status(HttpStatus.OK).body("Invalid Query Parameter");
+		List<Product> l=product.getAll(param1,param2);
+		System.out.println(l);
 		return ResponseEntity.status(HttpStatus.OK).body(l);
 	}
+	
+	
 	
 	
 	//User
 	@PostMapping("/user/create")
 	public ResponseEntity<?> createUser(@Valid @RequestBody User t, BindingResult br) {
 		if(!br.hasErrors()) {
+			if(user.get(t.getEmail())==null) {
 			user.create(t);
 			return ResponseEntity.status(HttpStatus.OK).body(user.get(t.getEmail()));
+			}
+			return ResponseEntity.status(HttpStatus.CREATED).body(user.get(t.getEmail()));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
-
-	}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
+	}	
 	
 	@DeleteMapping("/user/delete/{id}")
 	public ResponseEntity<?> deleteUser(@Valid @PathVariable String id) {
 		user.delete(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
+	
 	@PutMapping("/user/update/{id}")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t, @PathVariable String id,  BindingResult br) {  
 		
@@ -103,18 +110,20 @@ public class AdminController{
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
-	@GetMapping("/user/{email}")
-	public ResponseEntity<?> getUser(@Valid@PathVariable String email) {
+	
+	@GetMapping("/user/get/{email}")
+	public ResponseEntity<?> getUser(@Valid @PathVariable String email) {
 		User t =user.get(email);
 		if(t!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(t);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Email id");
 	}
-//	<T> ResponseEntity<T> evaluateRequest(T item, HttpStatus success, HttpStatus fail ){
-//		if(item!=null) {
-//			return ResponseEntity.status(success).body(item);	
-//		}
-//		return ResponseEntity.status(fail).body(item);		
-//	}
+	
+	@GetMapping("/user/getAll")
+	public ResponseEntity<?> getAllUsers() {	
+		List<User> l=user.getAll();
+		System.out.println(l);
+		return ResponseEntity.status(HttpStatus.OK).body(l);
+	}
 	
 }
