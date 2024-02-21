@@ -2,6 +2,8 @@ package com.furniturecloud.datalayer;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+
 //import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -26,13 +28,14 @@ public class User {
 //	change to list later to accommodate more addresses
 //	@OneToOne
 	private String address;
-
+	@Column(length = 1000)
 	private String cartData;
+	@Column(length = 1000)
 	private String wishListData;
 	
-	@OneToMany
-	private List<Order> orders;
-	
+//	@OneToMany
+//	private List<Order> orders;
+//	
 	
 	
 	public String getAddress() {

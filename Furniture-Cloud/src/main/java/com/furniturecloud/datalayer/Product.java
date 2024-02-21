@@ -1,5 +1,6 @@
 package com.furniturecloud.datalayer;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +17,7 @@ import jakarta.persistence.NamedNativeQuery;
 	    name="selectAllCategory",
 	    query="SELECT PRODUCT.* FROM PRODUCT AS PRODUCT WHERE PRODUCT.category =?1",
 	    resultClass=Product.class
-	)
+	)	
 
 
 public class Product {
@@ -24,8 +25,20 @@ public class Product {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long SKU;
 	String name;
+	@Column(length = 2000)
+	String desc;
 	String category;
 	Integer stock;
+	Integer price;
+	public Integer getPrice() {
+		return price;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
 	public String getName() {
 		return name;
 	}
