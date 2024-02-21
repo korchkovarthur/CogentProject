@@ -1,10 +1,13 @@
 package com.furniturecloud.datalayer;
 
+import java.util.List;
+
 //import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.OneToMany;
 
 
 
@@ -26,6 +29,9 @@ public class User {
 
 	private String cartData;
 	private String wishListData;
+	
+	@OneToMany
+	private List<Order> orders;
 	
 	
 	
