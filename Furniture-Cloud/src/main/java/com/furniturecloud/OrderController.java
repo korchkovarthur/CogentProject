@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.furniturecloud.datalayer.DAO;
 import com.furniturecloud.datalayer.Order;
 
 import jakarta.validation.Valid;
 
+@RestController("/order")
 public class OrderController {
 	@Autowired
 	private DAO<Order, Integer> Order;
@@ -25,7 +27,7 @@ public class OrderController {
 	// Need to decide on return values
 
 	// Order
-	@PostMapping("/Order/create")
+	@PostMapping("/create")
 	public ResponseEntity<?> createOrder(@Valid @RequestBody Order prod, BindingResult br) {
 		if (!br.hasErrors()) {
 			Order.create(prod);
@@ -51,7 +53,7 @@ public class OrderController {
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 //	}
 
-	@GetMapping("/Order/{id}")
+	@GetMapping("get/{id}")
 	public ResponseEntity<?> getOrder(@Valid @PathVariable Integer id) {
 		Order o = Order.get(id);
 		if (o != null)
@@ -59,7 +61,7 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid ID");
 	}
 
-	@GetMapping("/Order/getAll/{param1}/{param2}")
+	@GetMapping("getAll/{param1}/{param2}")
 	public ResponseEntity<?> getAllOrders(@PathVariable("param1") String param1,
 			@PathVariable("param2") String param2) {
 		if (!(param1.equals("id") || param1.equals("none")))

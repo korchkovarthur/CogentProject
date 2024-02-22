@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.furniturecloud.datalayer.DAO;
 import com.furniturecloud.datalayer.User;
 
 import jakarta.validation.Valid;
-
+@RestController("/user")
 public class UserController {
 	@Autowired
 	private DAO<User, String> user;
-	@PostMapping("/user/create")
+	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@Valid @RequestBody User t, BindingResult br) {
 		if(!br.hasErrors()) {
 			if(user.get(t.getEmail())==null) {
@@ -33,13 +35,13 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}	
 	
-	@DeleteMapping("/user/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteUser(@Valid @PathVariable String id) {
 		user.delete(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
 	
-	@PutMapping("/user/update/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t, @PathVariable String id,  BindingResult br) {  
 		
 		if(!br.hasErrors()) {
@@ -51,7 +53,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
 	
-	@GetMapping("/user/get/{email}")
+	@GetMapping("/get/{email}")
 	public ResponseEntity<?> getUser(@Valid @PathVariable String email) {
 		User t =user.get(email);
 		if(t!=null)
@@ -59,7 +61,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Email id");
 	}
 	
-	@GetMapping("/user/getAll")
+	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUsers() {	
 		List<User> l=user.getAll();
 		System.out.println(l);
