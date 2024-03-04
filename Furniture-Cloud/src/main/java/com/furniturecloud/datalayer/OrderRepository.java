@@ -1,6 +1,7 @@
 package com.furniturecloud.datalayer;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,39 +13,39 @@ import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
-public class OrderRepository implements DAO<Order, Integer>{
+public class OrderRepository implements DAO<Orders, UUID>{
 	
 	@PersistenceContext
 	@Autowired
 	EntityManager em;
 
 	@Override
-	public void create(Order t) {
+	public void create(Orders t) {
 		em.persist(t);
 	}
 
 	@Override
-	public Order get(Integer id) {
-		return em.find(Order.class, id);
+	public Orders get(UUID id) {
+		return em.find(Orders.class, id);
 	}
 
 	@Override
-	public void update(Order t) {
+	public void update(Orders t) {
 		if (get(t.getId()) != null) {
 			em.merge(t);
 		}
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(UUID id) {
 		em.remove(get(id));
 	}
 
 	@Override
-	public List<Order> getAll(String... param) {
-		TypedQuery<Order> query = em.createNamedQuery(
-				"selectAll"+((param[0].equals("none"))?"":param[0]), 
-				Order.class);
+	public List<Orders> getAll(String... param) {
+		TypedQuery<Orders> query = em.createNamedQuery(
+				"selectAllOrders"+((param[0].equals("none"))?"":param[0]), 
+				Orders.class);
 		
 		if(!param[1].equals("none"))
 			query.setParameter(1, param[1]);

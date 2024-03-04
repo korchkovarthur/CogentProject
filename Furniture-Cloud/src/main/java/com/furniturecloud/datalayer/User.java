@@ -1,42 +1,85 @@
 package com.furniturecloud.datalayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.furniturecloud.security_models.ApplicationUser;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
 //import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 
 
 
 @Entity
 @NamedNativeQuery(
 	    name="selectAllUsers",
-	    query="SELECT USER.* FROM USER AS USER ",
+	    query="SELECT USER.* FROM USERS AS USER ",
 	    resultClass=User.class
 	)
-
+@Table(name="users")
 public class User {
 	@Id
-	private String email;
-	private String firstName;
-	private String lastName;
-//	change to list later to accommodate more addresses
-//	@OneToOne
+	@GeneratedValue(strategy = GenerationType.IDENTITY)		
+    private Integer user_id;
+    
+    @Column(unique = true)
+    private String email;
+    
+    private String firstName;
+    private String lastName;
+ 
+
 	private String address;
-	@Column(length = 1000)
-	private String cartData;
-	@Column(length = 1000)
-	private String wishListData;
-	
-//	@OneToMany
-//	private List<Order> orders;
-//	
-	
+    
+    @Column(length = 1000)
+    private String cartData;
+    
+    @Column(length = 1000)
+    private String wishListData;
+		
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Orders> orders = new ArrayList<>();
+
+    
+
+
+    public User(String email) {
+        this.email = email;
+    }
+
+    
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+    
+    public void addOrder(Orders order) {
+        orders.add(order);
+        order.setUser(this);
+    }
+    public Integer getUser_id() {
+ 		return user_id;
+ 	}
+
+ 	public void setUser_id(Integer user_id) {
+ 		this.user_id = user_id;
+ 	}
 	
 	public String getAddress() {
 		return address;
@@ -100,28 +143,10 @@ public class User {
 		return lastName;
 	}
 	
+
+
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-//	List<Product> shoppingCart;
-//	@Transient
-//	private Cart mainCart;
-//	@Transient
-//	private Cart wishList;
-
-	//Cart Object
-//	public Cart getWishList() {
-//		return wishList;
-//	}
-//
-//	public void setWishList(Cart wishList) {
-//		this.wishList = wishList;
-//	}
-	//Cart Object
-//	public Cart getMainCart() {
-//		return mainCart;
-//	}
-//
-//	public void setMainCart(Cart mainCart) {
-//		this.mainCart = mainCart;
 }

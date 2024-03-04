@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedNativeQuery;
 
-@Entity
+
 @NamedNativeQuery(
 	    name="selectAll",
 	    query="SELECT PRODUCT.* FROM PRODUCT AS PRODUCT ",
@@ -18,19 +18,18 @@ import jakarta.persistence.NamedNativeQuery;
 	    query="SELECT PRODUCT.* FROM PRODUCT AS PRODUCT WHERE PRODUCT.category =?1",
 	    resultClass=Product.class
 	)	
-
-
+@Entity
 public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Long SKU;
 	String name;
 	@Column(length = 2000)
-	String desc;
+	String descr;
 	String category;
 	Integer stock;
 	Integer price;
-	public Integer getPrice() {
+	public Integer getPrice() { 
 		return price;
 	}
 	public void setPrice(Integer price) {

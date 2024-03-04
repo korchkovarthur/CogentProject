@@ -1,8 +1,5 @@
 package com.furniturecloud;
 
-
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +20,13 @@ import com.furniturecloud.datalayer.Product;
 import com.furniturecloud.datalayer.User;
 
 import jakarta.validation.Valid;
-@RestController("/product")
+@RestController
 public class ProductController{
 	
 	@Autowired
 	private DAO<Product, Long> product;
 	
-	@PostMapping("/create")
+	@PostMapping("/product/create")
 	public ResponseEntity<?> createProduct(@Valid @RequestBody  Product prod, BindingResult br) {
 		if(!br.hasErrors()) {
 			product.create(prod);
@@ -38,13 +35,13 @@ public class ProductController{
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/product/delete/{id}")
 	public ResponseEntity<?> deleteProduct( @PathVariable Long sku) {
 		product.delete(sku);
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/product/update/{id}")
 	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod,
 			@PathVariable Long id, BindingResult br) {
 		if(!br.hasErrors()) {
@@ -56,14 +53,14 @@ public class ProductController{
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
 	
-	@GetMapping("get/{id}")
+	@GetMapping("/product/get/{id}")
 	public ResponseEntity<?> getProduct(@Valid @PathVariable Long id) {	
 		Product p =product.get(id);
 		if(p!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(p);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid SKU");
 	}
-	@GetMapping("/getAll/{param1}/{param2}")
+	@GetMapping("/product/getAll/{param1}/{param2}")
 	public ResponseEntity<?> getAllProducts(@PathVariable("param1") String param1, @PathVariable("param2") String param2) {	
 		if(!(param1.equals("Category")||param1.equals("none")))
 			return ResponseEntity.status(HttpStatus.OK).body("Invalid Query Parameter");
@@ -71,10 +68,5 @@ public class ProductController{
 		System.out.println(l);
 		return ResponseEntity.status(HttpStatus.OK).body(l);
 	}
-	
-	
-	
-
-
 	
 }

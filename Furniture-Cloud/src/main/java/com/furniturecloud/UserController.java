@@ -19,10 +19,16 @@ import com.furniturecloud.datalayer.DAO;
 import com.furniturecloud.datalayer.User;
 
 import jakarta.validation.Valid;
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private DAO<User, String> user;
+	@GetMapping
+	public String checkAccess() {
+		return "User Level Access";
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@Valid @RequestBody User t, BindingResult br) {
 		if(!br.hasErrors()) {
@@ -53,14 +59,14 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
 	}
 	
-	@GetMapping("/get/{email}")
+	@GetMapping("/{email}")
 	public ResponseEntity<?> getUser(@Valid @PathVariable String email) {
 		User t =user.get(email);
 		if(t!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(t);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Email id");
 	}
-	
+		
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUsers() {	
 		List<User> l=user.getAll();
