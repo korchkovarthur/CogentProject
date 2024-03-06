@@ -24,6 +24,7 @@ import com.furniturecloud.datalayer.Product;
 import com.furniturecloud.datalayer.User;
 import com.furniturecloud.datalayer.UserRepo;
 import com.furniturecloud.security.utils.CartDTO;
+import com.furniturecloud.security.utils.LoginResponseDTO;
 
 import jakarta.validation.Valid;
 @RestController
@@ -88,7 +89,7 @@ public class UserController {
 	}	
     
 	@PutMapping("/update")
-	public ResponseEntity<?> putMethodName(@AuthenticationPrincipal UserDetails userDetails, @RequestBody User t) {
+	public ResponseEntity<?> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody User t) {
 		//TODO: process PUT request
 		String email = userDetails.getUsername();
 		Optional<User> u = user2.findByEmail(t.getEmail());
@@ -106,6 +107,6 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<?> checkAccess(@AuthenticationPrincipal UserDetails userDetails) {
 		User u = user2.findByEmail(userDetails.getUsername()).get();
-		return  ResponseEntity.status(HttpStatus.OK).body("User Access");
+		return  ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"User Access"));
 	}
 }
