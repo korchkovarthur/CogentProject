@@ -23,38 +23,9 @@ public class ProductController{
 	@Autowired
 	private DAO<Product, Long> product;
 	
-	@PostMapping("/create")
-	public ResponseEntity<?> createProduct(@Valid @RequestBody  Product prod, BindingResult br) {
-		if(!br.hasErrors()) {
-			product.create(prod);
-			return ResponseEntity.status(HttpStatus.OK).body(product.get(prod.getSKU()));
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
-	}
-	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteProduct( @PathVariable Long sku) {
-		product.delete(sku);
-		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
-	}
-	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod,
-			@PathVariable Long id, BindingResult br) {
-		if(!br.hasErrors()) {
-			prod.setSKU(id);
-			product.update(prod);
-			return ResponseEntity.status(HttpStatus.OK).body("Updated");
-			
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
-	}
 
-	@PostMapping("/verifyCart/{cart}")
-	public Object postMethodName(@PathVariable String cart) {
-		Cart ob = new Cart(cart);
-		String unavaliable=ob.findUnavailable();
-		return new CartDTO(cart, unavaliable);
-	}
 	
+
+
+
 }
