@@ -3,8 +3,6 @@ package com.furniturecloud.datalayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.furniturecloud.security_models.ApplicationUser;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
@@ -17,8 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 
 
@@ -36,12 +35,15 @@ public class User {
     private Integer user_id;
     
     @Column(unique = true)
+    @Email
+    @NotNull
     private String email;
-    
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
  
-
+    @NotNull
 	private String address;
     
     @Column(length = 1000)

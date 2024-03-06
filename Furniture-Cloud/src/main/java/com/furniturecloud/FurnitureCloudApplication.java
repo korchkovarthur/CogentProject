@@ -30,11 +30,14 @@ public class FurnitureCloudApplication {
 			if(r.findByAuthority("ADMIN").isPresent())return;
 			Role adminRole= r.save(new Role("ADMIN"));
 			User user = new User();
-			user.setEmail("Admin");
+			user.setEmail("admin123@fc.com");
+			user.setFirstName("Admin");
+			user.setLastName("Admin");
+			user.setAddress("Cloud-9");
 			Set<Role> roles= new HashSet<Role>();
 			roles.add(adminRole);
 			roles.add(r.save(new Role("USER")));
-			ApplicationUser admin = new ApplicationUser(1, "Admin","{bcrypt}"+p.encode("1234"), roles,user);
+			ApplicationUser admin = new ApplicationUser(1, user.getEmail(),"{bcrypt}"+p.encode("1234"), roles,user);
 			ur.create(user);
 			u.save(admin);
 		};

@@ -12,7 +12,7 @@ import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
-public class UserRepository implements DAO<User, String> {
+public class UserRepository implements DAO<User, Integer> {
 	@PersistenceContext
 	@Autowired
 	EntityManager entityManager;
@@ -22,19 +22,19 @@ public class UserRepository implements DAO<User, String> {
 	}
 
 	@Override
-	public User get(String email) {
-		return entityManager.find(User.class, email);
+	public User get(Integer id) {
+		return entityManager.find(User.class, id);
 	}
 
 	@Override
 	public void update(User t) {
-		if(get(t.getEmail())!=null) 
+		if(get(t.getUser_id())!=null) 
 			entityManager.merge(t);		
 	}
 
 	@Override
-	public void delete(String email) {
-		entityManager.remove(get(email));		
+	public void delete(Integer a) {
+		entityManager.remove(get(a));		
 	}
 
 	@Override

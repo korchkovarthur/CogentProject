@@ -28,11 +28,11 @@ public class Product {
 	String descr;
 	String category;
 	Integer stock;
-	Integer price;
-	public Integer getPrice() { 
+	Float price;
+	public Float getPrice() { 
 		return price;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 	public void setStock(Integer stock) {
