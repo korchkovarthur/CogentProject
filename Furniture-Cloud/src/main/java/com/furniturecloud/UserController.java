@@ -76,17 +76,7 @@ public class UserController {
 	//END-----Product - User Access
 	
 	//Start-----User - User Access
-	@PostMapping("/create")
-	public ResponseEntity<?> createUser(@Valid @RequestBody User t, BindingResult br) {
-		if(!br.hasErrors()) {
-			if(user.get(t.getUser_id())==null) {
-			user.create(t);
-			return ResponseEntity.status(HttpStatus.OK).body(user.get(t.getUser_id()));
-			}
-			return ResponseEntity.status(HttpStatus.CREATED).body(user.get(t.getUser_id()));
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
-	}	
+	
     
 	@PutMapping("/update")
 	public ResponseEntity<?> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody User t) {
@@ -106,7 +96,7 @@ public class UserController {
 	//Checking validity
 	@GetMapping
 	public ResponseEntity<?> checkAccess(@AuthenticationPrincipal UserDetails userDetails) {
-		User u = user2.findByEmail(userDetails.getUsername()).get();
+//		User u = user2.findByEmail(userDetails.getUsername()).get();
 		return  ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"User Access"));
 	}
 }

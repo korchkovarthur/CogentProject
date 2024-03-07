@@ -48,11 +48,28 @@ public class AuthenticationService {
 		Set<Role> role = new HashSet<Role>();
 		role.add(userRole);
 		if(userRepo1.findByEmail(u.getEmail()).isPresent()) {
-			return new LoginResponseDTO(u, "Failed: Invalid Email");
+			return new LoginResponseDTO(u, "Email already in use!");
 		}
 		userRepo2.create(user);
 		auRepo.save(new ApplicationUser(user.getEmail(), encodedPass, role,user));
 
+		return new LoginResponseDTO(null, "Success");
+	}
+	public LoginResponseDTO updateUser(User u, String password) {
+		System.out.println("Updating" + u.getUser_id());
+		//Get ID
+		ApplicationUser au = auRepo.findByUsername(u.getEmail()).get();
+		User user = userRepo2.get(u.getUser_id());
+		if(!password.equals("")) {
+		au.setPassword("{bcrypt}"+encoder.encode(password));;
+		}
+		if(!user.getEmail().equals(u.getEmail())) {
+			if(userRepo1.findByEmail(u.getEmail()).isPresent())
+			return new LoginResponseDTO(u, "Email already in use!");
+		}
+		userRepo2.update(u);
+		auRepo.save(au);
+		System.out.println("Updated" + u.getUser_id());
 		return new LoginResponseDTO(null, "Success");
 	}
 	public LoginResponseDTO loginUser(String email, String password) {

@@ -1,18 +1,5 @@
 package com.furniturecloud;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.furniturecloud.datalayer.Cart;
-import com.furniturecloud.datalayer.DAO;
-import com.furniturecloud.datalayer.Product;
-import com.furniturecloud.datalayer.User;
-import com.furniturecloud.security.utils.CartDTO;
-import com.furniturecloud.security.utils.LoginDTO;
-import com.furniturecloud.security.utils.LoginResponseDTO;
-
-import jakarta.validation.Valid;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.furniturecloud.datalayer.DAO;
+import com.furniturecloud.datalayer.Product;
+import com.furniturecloud.datalayer.User;
+import com.furniturecloud.security.utils.LoginResponseDTO;
+import com.furniturecloud.services.AuthenticationService;
+
+import jakarta.validation.Valid;
 
 
 
@@ -37,6 +34,8 @@ public class AdminController {
 	private DAO<User, Integer> user;
 	@Autowired
 	private DAO<Product, Long> product;
+	@Autowired
+	private AuthenticationService authService;
 
 	//Start-----User - Admin Access
 	@DeleteMapping("user/delete/{id}")
@@ -45,13 +44,11 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
 	}
 	
-	@PutMapping("user/update/{id}")
-	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t, @PathVariable Integer id,  BindingResult br) {  
+	@PutMapping("user/update/{password}")
+	public ResponseEntity<?> updateUser(@Valid @RequestBody  User t, @PathVariable String password,  BindingResult br) {  
 		
 		if(!br.hasErrors()) {
-			t.setUser_id(id);
-			user.update(t);
-			return ResponseEntity.status(HttpStatus.OK).body("Updated");
+			return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(t, password));
 			
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
@@ -62,7 +59,7 @@ public class AdminController {
 		User t =user.get(id);
 		if(t!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(t);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid id");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new LoginResponseDTO(null,"Invalid ID"));
 	}
 		
 	@GetMapping("user/getAll")
@@ -70,7 +67,16 @@ public class AdminController {
 		List<User> l=user.getAll();
 		return ResponseEntity.status(HttpStatus.OK).body(l);
 	}
-	//User-----Product - Admin Access
+	@PostMapping("user/create/{password}")
+	public ResponseEntity<?> regUser(@Valid@RequestBody User u, @PathVariable String password, BindingResult br) {
+		System.out.println(u.getEmail());
+		if(!br.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.OK).body(authService.registerUser(u, password));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
+		
+	}
+	//End-----User - Admin Access
 	
 	
 	//Start-----Product - Admin Access
@@ -83,10 +89,11 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
 	}
 	
-	@DeleteMapping("/product/delete/{id}")
+	@DeleteMapping("/product/delete/{sku}")
 	public ResponseEntity<?> deleteProduct( @PathVariable Long sku) {
+		System.out.println("In product delete");
 		product.delete(sku);
-		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
+		return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"Deleted"));
 	}
 	
 	@PutMapping("/product/update/{id}")
@@ -95,7 +102,7 @@ public class AdminController {
 		if(!br.hasErrors()) {
 			prod.setSKU(id);
 			product.update(prod);
-			return ResponseEntity.status(HttpStatus.OK).body("Updated");
+			return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"Updated"));
 			
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());
