@@ -48,25 +48,7 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body(p);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid SKU");
 	}
-	@GetMapping("product/getAll/{param1}/{param2}/{param3}")
-	public ResponseEntity<?> getAllProducts(@PathVariable("param1") String param1,
-			@PathVariable("param2") String param2, @PathVariable("param3") String param3) {	
-		param3=param3.toLowerCase();
-		if(!(param1.equals("Category")||param1.equals("none")))
-			return ResponseEntity.status(HttpStatus.OK).body("Invalid Query Parameter");
-		List<Product> l=product.getAll(param1,param2);
-		if(param3.equals("name")) {
-			l.sort((a,b)->(a.getName().toLowerCase()).compareTo(a.getName().toLowerCase()));
-		}
-		else if(param3.equals("price")){
-			l.sort((a,b)->(int)(a.getPrice()-b.getPrice()));	
-		}
-		else {
-			
-		}
-		System.out.println(l);
-		return ResponseEntity.status(HttpStatus.OK).body(l);
-	}
+
 	@PostMapping("/verifyCart/{cart}")
 	public CartDTO verifyCart(@PathVariable String cart) {
 		Cart ob = new Cart(cart);
@@ -81,15 +63,21 @@ public class UserController {
 	@PutMapping("/update")
 	public ResponseEntity<?> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody User t) {
 		//TODO: process PUT request
+
+//		Optional<User> u = user2.findByEmail(t.getEmail());
+		User u =user.get(t.getUser_id());
+		u.setCartData(t.getCartData());
+		u.setWishListData(t.getWishListData());
+		user.update(u);
+		return ResponseEntity.status(HttpStatus.OK).body(u);
+
+	}
+	@GetMapping("/get")
+	public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+		//TODO: process PUT request
 		String email = userDetails.getUsername();
-		Optional<User> u = user2.findByEmail(t.getEmail());
-		if(u.isEmpty()) {
-		int id= user2.findByEmail(email).get().getUser_id();
-		t.setUser_id(id);
-		user.update(t);
-		return ResponseEntity.status(HttpStatus.OK).body("Success");
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+		Optional<User> u = user2.findByEmail(email);
+		return ResponseEntity.status(HttpStatus.OK).body(u.get());
 	}
 	//End-----User - User Access
 	

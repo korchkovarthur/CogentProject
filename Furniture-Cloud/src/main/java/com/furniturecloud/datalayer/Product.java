@@ -44,6 +44,14 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Product(String name, String descr, String category, Integer stock, Float price) {
+		super();
+		this.name = name;
+		this.descr = descr;
+		this.category = category;
+		this.stock = stock;
+		this.price = price;
+	}
 	public void setSKU(Long sKU) {
 		SKU = sKU;
 	}

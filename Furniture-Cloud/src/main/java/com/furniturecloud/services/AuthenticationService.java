@@ -59,8 +59,8 @@ public class AuthenticationService {
 		System.out.println("Updating" + u.getUser_id());
 		//Get ID
 		ApplicationUser au = auRepo.findByUsername(u.getEmail()).get();
-		User user = userRepo2.get(u.getUser_id());
-		if(!password.equals("")) {
+		User user = userRepo2.get(u.getUser_id());	
+		if(!password.equals("-1")) {
 		au.setPassword("{bcrypt}"+encoder.encode(password));;
 		}
 		if(!user.getEmail().equals(u.getEmail())) {
@@ -87,5 +87,17 @@ public class AuthenticationService {
 			System.err.println(e);
 			 return new LoginResponseDTO(null, "");
 		}
+	}
+	public LoginResponseDTO deleteUser(User u) {
+		System.out.println("Deleting" + u.getUser_id());
+		//Get ID
+		ApplicationUser au = auRepo.findByUsername(u.getEmail()).get();
+		if(au.getAuthorities().contains(roleRepo.findById(1).get())) {
+			return new LoginResponseDTO(null, "Cannot Delete Admin");
+		}
+		userRepo2.delete(u.getUser_id());
+		auRepo.deleteById(au.getUserId());
+
+		return new LoginResponseDTO(null, "Success");
 	}
 }

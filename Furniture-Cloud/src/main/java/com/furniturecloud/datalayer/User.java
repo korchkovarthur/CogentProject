@@ -52,8 +52,7 @@ public class User {
     @Column(length = 1000)
     private String wishListData;
 		
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Orders> orders = new ArrayList<>();
+
 
     
 
@@ -63,18 +62,12 @@ public class User {
     }
 
     
-    public List<Orders> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Orders> orders) {
-        this.orders = orders;
-    }
     
-    public void addOrder(Orders order) {
-        orders.add(order);
-        order.setUser(this);
-    }
+//    public void addOrder(Orders order) {
+//        orders.add(order);
+//        order.setUser(this);
+//    }
     public Integer getUser_id() {
  		return user_id;
  	}

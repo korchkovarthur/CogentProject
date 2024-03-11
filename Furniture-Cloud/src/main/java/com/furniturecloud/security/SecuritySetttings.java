@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +19,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.furniturecloud.security.utils.RSAKeyProperties;
 import com.nimbusds.jose.jwk.JWK;
@@ -55,8 +56,8 @@ public class SecuritySetttings {
 		 return http
 				 .csrf(csrf->csrf.disable())
 				 .authorizeHttpRequests(auth->{
-					auth.requestMatchers("/auth/**" ).permitAll();
-					auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
+					auth.requestMatchers("/auth/**","product-images/**").permitAll();
+					auth.requestMatchers("/user/**","/orders/**").hasAnyRole("ADMIN", "USER");
 					auth.requestMatchers("/admin/**").hasRole("ADMIN");
 					auth.anyRequest().authenticated();
 					})
@@ -85,6 +86,17 @@ public class SecuritySetttings {
     	JwtAuthenticationConverter jwtAuthConverter= new JwtAuthenticationConverter();
     	jwtAuthConverter.setJwtGrantedAuthoritiesConverter(jGAC);
     	return jwtAuthConverter;
+    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry
+                        .addMapping("/**")
+                        .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
+            }
+        };
     }
 
 }

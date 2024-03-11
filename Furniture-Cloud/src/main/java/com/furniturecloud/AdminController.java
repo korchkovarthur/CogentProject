@@ -40,8 +40,8 @@ public class AdminController {
 	//Start-----User - Admin Access
 	@DeleteMapping("user/delete/{id}")
 	public ResponseEntity<?> deleteUser(@Valid @PathVariable Integer id) {
-		user.delete(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Deleted");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(authService.deleteUser(user.get(id)));
 	}
 	
 	@PutMapping("user/update/{password}")
@@ -83,7 +83,8 @@ public class AdminController {
 	@PostMapping("/product/create")
 	public ResponseEntity<?> createProduct(@Valid @RequestBody  Product prod, BindingResult br) {
 		if(!br.hasErrors()) {
-			product.create(prod);
+			Product p = new Product(prod.getName(), prod.getDescr(), prod.getCategory(), prod.getStock(), prod.getPrice());
+			product.create(p);
 			return ResponseEntity.status(HttpStatus.OK).body(product.get(prod.getSKU()));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(br.getAllErrors());			
@@ -96,11 +97,9 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"Deleted"));
 	}
 	
-	@PutMapping("/product/update/{id}")
-	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod,
-			@PathVariable Long id, BindingResult br) {
+	@PutMapping("/product/update")
+	public ResponseEntity<?> updateProduct(@Valid @RequestBody Product prod, BindingResult br) {
 		if(!br.hasErrors()) {
-			prod.setSKU(id);
 			product.update(prod);
 			return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(null,"Updated"));
 			
